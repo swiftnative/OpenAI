@@ -61,7 +61,9 @@ let completion: ChatCompletion = try response.decode()
 
 ```
 
-Feel free to create you own simple codable model to decode to, if you don't need the full ones.
+#### Feel free to
+- create you own simple codable model to decode to, if you don't need the full ones.
+- extend api, if you need more.
 
 
 
