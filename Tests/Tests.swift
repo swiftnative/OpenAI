@@ -10,6 +10,7 @@ import URLConfig
 final class AssistantTests: XCTestCase {
 
   override func setUpWithError() throws {
+    #warning("Provide you api_key for use")
     URLRequest.Config.OpenAI.apiKey = "<API_KEY>"
   }
 
