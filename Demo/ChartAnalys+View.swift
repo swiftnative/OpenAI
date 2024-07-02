@@ -5,69 +5,94 @@
 import SwiftUI
 import Observation
 import OpenAI
+import MarkdownUI
 
 struct ChartAnalysView: View {
   @State var chart = ChartAnalysModel()
+  let image = UIImage(named: "chart")!
 
   var body: some View {
     ScrollView {
       VStack(alignment: .leading) {
-        Image("chart")
+        Image(uiImage: image)
           .resizable()
           .aspectRatio(contentMode: .fit)
 
+        VStack{
 
-        if let analysis = chart.analysis {
-          VStack(alignment: .leading, spacing: 10) {
-            HStack {
-              Text(analysis.analysis.ticker)
-              Text(analysis.analysis.fimeFrame)
-            }
-            .font(.title)
+          if let dataKB = chart.dataKB {
+            LabeledContent("Data, KB", value: dataKB, format: .number)
+          }
 
-            VStack(alignment: .leading) {
-              Text("Analysis")
-                .font(.title2)
-              Text(analysis.analysis.text)
-              Text(analysis.analysis.conclusion)
-                .font(.headline)
-            }
+          if chart.inProgress {
+            ProgressView()
+          }
 
-            if let strategies = analysis.strategies {
-              Text("Strategies")
-                .font(.title2)
-              ForEach(strategies.indices, id: \.self) { index in
-                let strategy = strategies[index]
-                VStack(alignment: .leading, spacing: 2) {
-                  Text(strategy.info)
-                  LabeledContent("Open", value: "\(strategy.open)")
-                  LabeledContent("TakeProfit", value: "\(strategy.takeProfit)")
-                  LabeledContent("StopLoss", value: "\(strategy.stopLoss)")
+          LabeledContent("Duration", value: chart.duration, format: .number.precision(.fractionLength(2)))
+
+          if let usage = chart.usage {
+            LabeledContent("Completion", value: "\(usage.completionTokens)")
+            LabeledContent("Prompt", value: "\(usage.promptTokens)")
+            LabeledContent("Total", value: "\(usage.totalTokens)")
+          }
+
+          if let analysis = chart.analysisStructured {
+            VStack(alignment: .leading, spacing: 10) {
+
+              VStack(alignment: .leading) {
+                Text("Analysis")
+                  .font(.title2)
+                Markdown(analysis.analysis.text)
+              }
+
+              if let strategies = analysis.strategies {
+                Text("Strategies")
+                  .font(.title2)
+                ForEach(strategies.indices, id: \.self) { index in
+                  let strategy = strategies[index]
+                  VStack(alignment: .leading, spacing: 2) {
+                    Text(strategy.info)
+                    LabeledContent("Open", value: "\(strategy.open)")
+                    LabeledContent("TakeProfit", value: "\(strategy.takeProfit)")
+                    LabeledContent("StopLoss", value: "\(strategy.stopLoss)")
+                  }
                 }
               }
             }
           }
-          .padding()
-        }
 
-        Spacer()
+          if let string = chart.analysisString {
+
+            Markdown(string)
+          }
+
+          Spacer()
+        }
+        .padding(.horizontal)
       }
       .buttonStyle(.bordered)
     }
-
     .toolbar {
       ToolbarItem(placement: .bottomBar) {
-        if chart.inProgress {
-          ProgressView()
-        } else {
-          Button {
-            Task {
-              await chart.analyse()
-            }
-          } label: {
-            Text("Analyse")
+        Button {
+          Task {
+            await chart.analyseFucntionCall(image: image)
           }
+        } label: {
+          Text("Analyse(Structured)")
         }
+        .disabled(chart.inProgress)
+      }
+
+      ToolbarItem(placement: .bottomBar) {
+        Button {
+          Task {
+            await chart.analyseHTML(image: image)
+          }
+        } label: {
+          Text("Analyse(String)")
+        }
+        .disabled(chart.inProgress)
       }
     }
   }
@@ -80,10 +105,7 @@ struct ChartAnalysView: View {
 
 extension ToolCall.GetAnalysis {
   static var sample: Self {
-    let analysis = Analysis(ticker: "BTCUSD",
-                            fimeFrame: "15M",
-                            conclusion: "Conclusion",
-                            text: "It's sample analysis")
+    let analysis = Analysis(text: "It's sample analysis")
 
     let strategy = Strategy(takeProfit: 66900,
                             open: 66890,

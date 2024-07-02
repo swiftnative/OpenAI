@@ -25,28 +25,13 @@ extension Tool.Function {
       "analysis": {
         "type": "object",
         "properties": {
-          "ticker": {
-            "type": "string",
-            "description": "Stock ticker symbol"
-          },
-          "timeframe": {
-            "type": "string",
-            "description": "Time frame of the analysis"
-          },
           "text": {
             "type": "string",
-            "description": "Detailed text of the analysis"
-          },
-          "conclusion": {
-            "type": "string",
-            "description": "Conclusion of the analysis"
+            "description": "Detailed text of the analysis, after that conclusion, format: Markdown "
           }
         },
         "required": [
-          "ticker",
-          "timeframe",
-          "info",
-          "conclusion"
+          "info"
         ]
       },
       "strategies": {
@@ -98,16 +83,7 @@ extension ToolCall {
 }
 
 struct Analysis: Codable {
-  let ticker: String
-  let fimeFrame: String
-  let conclusion: String
   let text: String
-
-  public enum CodingKeys: String, CodingKey {
-    case fimeFrame = "timeframe"
-    case text
-    case ticker, conclusion
-  }
 }
 
 struct Strategy: Codable, Hashable {

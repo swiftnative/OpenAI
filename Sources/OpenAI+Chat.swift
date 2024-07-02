@@ -54,7 +54,7 @@ public struct ChatCompletionRequest: Encodable {
               logitBias: [String: Double]? = nil,
               user: String? = nil,
               tools: [Tool]? =  nil,
-              toolChoice: ToolChoice?) {
+              toolChoice: ToolChoice? = nil) {
     self.model = model
     self.messages = messages
     self.temperature = temperature

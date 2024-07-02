@@ -14,6 +14,7 @@
 		4F02D9AF2C18B0CD001CBF2E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F02D9AE2C18B0CD001CBF2E /* Message.swift */; };
 		4F02D9B12C18B0EC001CBF2E /* OpenAI+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F02D9B02C18B0EC001CBF2E /* OpenAI+Files.swift */; };
 		4F02D9B42C19AD35001CBF2E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F02D9B32C19AD35001CBF2E /* Media.xcassets */; };
+		4F1030A72C241199004C5B90 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F1030A62C241199004C5B90 /* MarkdownUI */; };
 		4F291DF92C22F81D0039B7FD /* OpenAI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F02D98F2C18A29B001CBF2E /* OpenAI.framework */; };
 		4F291DFA2C22F81D0039B7FD /* OpenAI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F02D98F2C18A29B001CBF2E /* OpenAI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4F291E002C22F8CF0039B7FD /* URLConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 4F291DFF2C22F8CF0039B7FD /* URLConfig */; };
@@ -107,6 +108,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F291DF92C22F81D0039B7FD /* OpenAI.framework in Frameworks */,
+				4F1030A72C241199004C5B90 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +257,9 @@
 				4F291DFC2C22F81D0039B7FD /* PBXTargetDependency */,
 			);
 			name = Demo;
+			packageProductDependencies = (
+				4F1030A62C241199004C5B90 /* MarkdownUI */,
+			);
 			productName = Demo;
 			productReference = 4F9F44D22C1CB88400A5D032 /* Demo.app */;
 			productType = "com.apple.product-type.application";
@@ -292,6 +297,7 @@
 			mainGroup = 4F02D9852C18A29B001CBF2E;
 			packageReferences = (
 				4F291DFE2C22F8CF0039B7FD /* XCRemoteSwiftPackageReference "URLConfig" */,
+				4F1030A52C241181004C5B90 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			productRefGroup = 4F02D9902C18A29B001CBF2E /* Products */;
 			projectDirPath = "";
@@ -627,7 +633,6 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -657,7 +662,6 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -713,6 +717,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4F1030A52C241181004C5B90 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
 		4F291DFE2C22F8CF0039B7FD /* XCRemoteSwiftPackageReference "URLConfig" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swiftnative/URLConfig";
@@ -724,6 +736,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F1030A62C241199004C5B90 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F1030A52C241181004C5B90 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
+		};
 		4F291DFF2C22F8CF0039B7FD /* URLConfig */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F291DFE2C22F8CF0039B7FD /* XCRemoteSwiftPackageReference "URLConfig" */;
