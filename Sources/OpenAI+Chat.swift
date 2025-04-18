@@ -191,7 +191,7 @@ public struct ChatCompletionRequest: Encodable {
   }
 }
 
-extension ChatCompletionRequest.Message {
+public extension ChatCompletionRequest.Message {
   static func user(_ message: String) -> Self {
     .user(.init(content: .string(message)))
   }
