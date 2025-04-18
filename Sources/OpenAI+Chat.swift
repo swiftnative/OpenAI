@@ -40,6 +40,7 @@ public struct ChatCompletionRequest: Encodable {
   public let user: String?
   public let tools: [Tool]?
   public let toolChoice: ToolChoice?
+  public let responseFormat: ResponseFormat?
 
   public init(model: String,
               messages: [Message],
@@ -54,7 +55,9 @@ public struct ChatCompletionRequest: Encodable {
               logitBias: [String: Double]? = nil,
               user: String? = nil,
               tools: [Tool]? =  nil,
-              toolChoice: ToolChoice? = nil) {
+              toolChoice: ToolChoice? = nil,
+              responseFormat: ResponseFormat? = nil
+  ) {
     self.model = model
     self.messages = messages
     self.temperature = temperature
@@ -69,6 +72,7 @@ public struct ChatCompletionRequest: Encodable {
     self.user = user
     self.tools = tools
     self.toolChoice = toolChoice
+    self.responseFormat = responseFormat
   }
 
   public enum Role: String, Codable {
@@ -163,6 +167,12 @@ public struct ChatCompletionRequest: Encodable {
     }
   }
 
+  public struct ResponseFormat: Codable {
+    public let type: String
+
+    public static let jsonObject = ResponseFormat(type: "json_object")
+  }
+
   enum CodingKeys: String, CodingKey {
     case model
     case messages
@@ -178,6 +188,20 @@ public struct ChatCompletionRequest: Encodable {
     case user
     case tools
     case toolChoice = "tool_choice"
+  }
+}
+
+extension ChatCompletionRequest.Message {
+  static func user(_ message: String) -> Self {
+    .user(.init(content: .string(message)))
+  }
+
+  static func assistant(_ message: String, name: String? = nil, toolCall: [ToolCall]? = nil) -> Self {
+    .assistant(ChatCompletionRequest.AssistantMessage(content: message, name: name, toolCalls: toolCall))
+  }
+
+  static func system(_ message: String) -> Self {
+    .system(ChatCompletionRequest.SystemMessage(content: message))
   }
 }
 
@@ -234,5 +258,26 @@ public struct ChatCompletion: Decodable {
     case model
     case usage
     case choices
+  }
+}
+
+extension OpenAI {
+  static func chatRequest(system: String,
+                          user: String,
+                          model: String,
+                          responseFormat: ChatCompletionRequest.ResponseFormat? = .jsonObject) -> URLRequest {
+    let systemMessage = ChatCompletionRequest.SystemMessage(content: system)
+    let userMessage: ChatCompletionRequest.UserMessage = .init(content: .string(user))
+
+    let createCompletionBody = ChatCompletionRequest(model: model,
+                                                     messages: [.system(systemMessage),
+                                                                .user(userMessage)
+                                                     ],
+                                                     responseFormat: responseFormat
+
+    )
+
+    let request = OpenAI.Chat.completion(createCompletionBody)
+    return request
   }
 }

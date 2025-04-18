@@ -10,6 +10,10 @@ import OpenAI
 extension String {
   struct OpenAI {
     static let gpt_4o_2024_05_13 = "gpt-4o-2024-05-13"
+    static let gpt4o = "gpt-4o"
+    static let gpt41 = "gpt-4.1"
+    static let gpt41mini = "gpt-4.1-mini"
+    static let gpt41nano = "gpt-4.1-nano"
   }
 }
 
@@ -25,13 +29,28 @@ extension Tool.Function {
       "analysis": {
         "type": "object",
         "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol"
+          },
+          "timeframe": {
+            "type": "string",
+            "description": "Time frame of the analysis"
+          },
           "text": {
             "type": "string",
-            "description": "Detailed text of the analysis, after that conclusion, format: Markdown "
+            "description": "Detailed text of the analysis"
+          },
+          "conclusion": {
+            "type": "string",
+            "description": "Conclusion of the analysis"
           }
         },
         "required": [
-          "info"
+          "ticker",
+          "timeframe",
+          "info",
+          "conclusion"
         ]
       },
       "strategies": {
@@ -83,7 +102,16 @@ extension ToolCall {
 }
 
 struct Analysis: Codable {
+  let ticker: String
+  let fimeFrame: String
+  let conclusion: String
   let text: String
+
+  public enum CodingKeys: String, CodingKey {
+    case fimeFrame = "timeframe"
+    case text
+    case ticker, conclusion
+  }
 }
 
 struct Strategy: Codable, Hashable {
@@ -98,3 +126,4 @@ struct Strategy: Codable, Hashable {
     case open, info
   }
 }
+
