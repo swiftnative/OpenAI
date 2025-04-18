@@ -261,7 +261,7 @@ public struct ChatCompletion: Decodable {
   }
 }
 
-extension OpenAI {
+public extension OpenAI {
   static func chatRequest(system: String,
                           user: String,
                           model: String,

@@ -7,19 +7,29 @@
 
 import Foundation
 
-extension OpenAI {
+public extension OpenAI {
 
   struct ErrorResponse: Decodable {
-    let error: OpenAI.Error
+    public let error: OpenAI.Error
+
+    public init(error: OpenAI.Error) {
+      self.error = error
+    }
   }
 
   struct Error: Swift.Error, Decodable {
-    let code: String
-    let message: String
-    let type: String
+    public let code: String
+    public let message: String
+    public let type: String
 
-    enum Codes {
-      static let unsupportedCountryRegionTerritory = "unsupported_country_region_territory"
+    public enum Codes {
+      public static let unsupportedCountryRegionTerritory = "unsupported_country_region_territory"
+    }
+
+    public init(code: String, message: String, type: String) {
+      self.code = code
+      self.message = message
+      self.type = type
     }
   }
 }
